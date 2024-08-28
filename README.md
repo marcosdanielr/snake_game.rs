@@ -39,4 +39,4 @@ cargo run
 
 This will start the game. Enjoy!  
 
-![Demonstration](https://i.imgur.com/lPGZPs0.gif)
+![Demonstration](https://i.imgur.com/yn2SRRC.gif)
