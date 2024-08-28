@@ -11,7 +11,7 @@ use piston_window::*;
 use draw::to_coord_u32;
 use game::Game;
 
-const BACK_COLOR: Color = [0.5, 0.5, 0.5, 1.0];
+const BACK_COLOR: Color = [0.0, 0.0, 0.0, 1.0];
 
 fn main() {
     let (width, height) = (20, 20);
