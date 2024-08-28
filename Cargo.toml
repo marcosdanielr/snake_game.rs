@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rand = "*"
-piston_window = "*"
+rand = "0.3.18"
+piston_window = "0.74.0"
