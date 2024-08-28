@@ -6,6 +6,7 @@ use crate::draw::draw_block;
 
 const SNAKE_COLOR: Color = [0.00, 0.80, 0.00, 1.0];
 
+#[derive(Copy, Clone, PartialEq)]
 pub enum Direction {
     Up,
     Down,
@@ -24,6 +25,7 @@ impl Direction {
     }
 }
 
+#[derive(Debug, Copy, Clone)]
 struct Block {
     x: i32,
     y: i32,
@@ -60,5 +62,82 @@ impl Snake {
         let head_block = self.body.front().unwrap();
 
         (head_block.x, head_block.y)
+    }
+
+    pub fn move_forward(&mut self, dir: Option<Direction>) {
+        if let Some(d) = dir {
+            self.direction = d
+        }
+
+        let (last_x, last_y): (i32, i32) = self.head_position();
+
+        let new_block = match self.direction {
+            Direction::Up => Block {
+                x: last_x,
+                y: last_y - 1,
+            },
+            Direction::Down => Block {
+                x: last_x,
+                y: last_y + 1,
+            },
+            Direction::Left => Block {
+                x: last_x - 1,
+                y: last_y,
+            },
+            Direction::Right => Block {
+                x: last_x + 1,
+                y: last_y,
+            },
+        };
+
+        self.body.push_front(new_block);
+
+        let removed_block = self.body.pop_back().unwrap();
+
+        self.tail = Some(removed_block);
+    }
+
+    pub fn head_direction(&self) -> Direction {
+        self.direction
+    }
+
+    pub fn next_head(&self, dir: Option<Direction>) -> (i32, i32) {
+        let (head_x, head_y) = self.head_position();
+
+        let mut moving_dir = self.direction;
+
+        if let Some(d) = dir {
+            moving_dir = d
+        }
+
+        match moving_dir {
+            Direction::Up => (head_x, head_y - 1),
+            Direction::Down => (head_x, head_y + 1),
+            Direction::Left => (head_x - 1, head_y),
+            Direction::Right => (head_x + 1, head_y),
+        }
+    }
+
+    pub fn restore_tail(&mut self) {
+        let blk = self.tail.unwrap();
+        self.body.push_back(blk);
+    }
+
+    pub fn overlap_tail(&self, x: i32, y: i32) -> bool {
+        let mut ch = 0;
+
+        for block in &self.body {
+            if block.x == x && block.y == y {
+                return true;
+            }
+
+            ch += 1;
+
+            if ch == self.body.len() - 1 {
+                break;
+            }
+        }
+
+        false
     }
 }
